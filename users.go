@@ -7,10 +7,10 @@ import (
 )
 
 type User struct {
-	Id      int
-	Name    string
-	Capital int
-	Salary  int
+	Id      int `json:"id"`
+	Name    string `json:"name"`
+	Capital int `json:"capital"`
+	Salary  int `json:"salary"`
 }
 
 func GetUserByName(name string) (User, error) {

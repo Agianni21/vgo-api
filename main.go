@@ -24,6 +24,28 @@ func listCardsAPI(w http.ResponseWriter, req *http.Request) {
 	w.Write(responseJson)
 }
 
+func getUserAPI(w http.ResponseWriter, req *http.Request) {
+	enableCors(&w)
+	log.Print("GET /user")
+
+	// Get user
+	username := req.URL.RawQuery
+	user, err := GetUserByName(username)
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	// transform cards into json repsonse
+	responseJson, err := json.Marshal(user)
+	if err != nil {
+		log.Print(err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(responseJson)
+}
+
 func buyPackAPI(w http.ResponseWriter, req *http.Request) {
 	enableCors(&w)
 	log.Print("GET /buypack")
@@ -159,5 +181,6 @@ func main() {
 	log.Print("Starting server on port 8080")
 	http.HandleFunc("/cards", listCardsAPI)
 	http.HandleFunc("/buypack", buyPackAPI)
+	http.HandleFunc("/user", getUserAPI)
 	http.ListenAndServe(":8080", nil)
 }
